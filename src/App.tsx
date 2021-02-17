@@ -1,17 +1,17 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 
 // Components
-import { Footer } from './components/footer/footer';
+import Header from './components/header/header';
+import Body from './components/body/body';
+import Footer from './components/footer/footer';
 
 const App = () => {
   return (
     <div className="App">
-      <header className="App-header">
-        <h1>JSS Converter</h1>
-      </header>
-      <Footer></Footer>
+      <Header/>
+      <Body/>
+      <Footer/>
     </div>
   );
 }

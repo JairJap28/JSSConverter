@@ -8,7 +8,7 @@ import Box from '@material-ui/core/Box';
 import CopyrightIcon from '@material-ui/icons/Copyright';
 import { Typography } from '@material-ui/core';
 
-export const Footer : FunctionComponent<{}> = (): ReactElement => {
+const Footer : FunctionComponent<{}> = (): ReactElement => {
     const classes = useStyles();
     return (
         <Box 
@@ -27,3 +27,4 @@ export const Footer : FunctionComponent<{}> = (): ReactElement => {
         </Box>
     );
 }
+export default Footer;
