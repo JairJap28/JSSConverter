@@ -7,7 +7,10 @@ import InputLabel from '@material-ui/core/InputLabel';
 import Select from '@material-ui/core/Select';
 import SelectJSSProps from './SelectJSSProps';
 
-const SelectJSS: FunctionComponent<SelectJSSProps> = (props): ReactElement => {
+const SelectJSS: FunctionComponent<SelectJSSProps> = (props: SelectJSSProps): ReactElement => {
+    const onChange = (event: React.ChangeEvent<{ name?: string | undefined, value: unknown}>) => {
+        props.onChange(event);
+    }
     return (
         <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-from-native-simple">
@@ -15,8 +18,8 @@ const SelectJSS: FunctionComponent<SelectJSSProps> = (props): ReactElement => {
             </InputLabel>
             <Select
                 native
-                value={1}
-                onChange={() => console.log('Hello')}
+                value={props.value}
+                onChange={onChange}
                 label="From"
                 inputProps={{
                     name: 'from',
@@ -24,10 +27,9 @@ const SelectJSS: FunctionComponent<SelectJSSProps> = (props): ReactElement => {
                 }}>
             
                 <option aria-label="none" value="" />
-                <option value="1">SQL</option>
-                <option value="2">StringBuilder</option>
-                <option value="3">JSON</option>
-                <option value="4">Entity</option>
+                { props.options.map(opt => {    
+                    return <option value={opt.key}>{opt.value}</option>    
+                }) }
 
             </Select>
         </FormControl>
