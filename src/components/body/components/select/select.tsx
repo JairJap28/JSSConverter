@@ -14,13 +14,14 @@ const SelectJSS: FunctionComponent<SelectJSSProps> = (props: SelectJSSProps): Re
     return (
         <FormControl variant="outlined">
             <InputLabel htmlFor="outlined-from-native-simple">
-                From
+                {props.tag}
             </InputLabel>
             <Select
                 native
+                disabled={props.disabled}
                 value={props.value}
                 onChange={onChange}
-                label="From"
+                label={props.tag}
                 inputProps={{
                     name: 'from',
                     id:'outlined-from-native-simple'
@@ -28,7 +29,7 @@ const SelectJSS: FunctionComponent<SelectJSSProps> = (props: SelectJSSProps): Re
             
                 <option aria-label="none" value="" />
                 { props.options.map(opt => {    
-                    return <option value={opt.key}>{opt.value}</option>    
+                    return <option key={opt.key} value={opt.key}>{opt.value}</option>    
                 }) }
 
             </Select>

@@ -8,8 +8,8 @@ import {
 // Components
 import SelectJSS from './components/select/select';
 
-// Entities
-import SelectJSSProps from './components/select/SelectJSSProps';
+// Material UI
+import Button from '@material-ui/core/Button';
 
 const Body: FunctionComponent<{}> = (): ReactElement => {
     const [originVal, setOriginVal] = React.useState('');
@@ -19,26 +19,39 @@ const Body: FunctionComponent<{}> = (): ReactElement => {
 
     const onChangeOrigin = (event: React.ChangeEvent<{ name?: string | undefined, value: unknown}>) => {
         let option: string = `${event.target.value}`;
-        setOptionDestinity(GetAllowedOptions(option));
+        let key: string = GetAllowedOptions(option);
+        setDestinityVal(key);
         setOriginVal(option);
     }
 
     const onChangeDestinity = (event: React.ChangeEvent<{ name?: string | undefined, value: unknown}>) => {
         let option: string = `${event.target.value}`;
-        setOptionOrigin(GetAllowedOptions(option));
+        let key: string = GetAllowedOptions(option);
+        setOriginVal(key);
         setDestinityVal(option);
+    }
+
+    const clearOptions = () => {
+        setOptionOrigin(GetOptionsToSelect());
+        setOptionDestinity(GetOptionsToSelect());
+        setOriginVal("");
+        setDestinityVal("");
     }
 
     return (
         <div>
             <SelectJSS 
+                tag="From"
                 value={originVal}
                 options={optionsOrigin}
                 onChange={onChangeOrigin}/>
             <SelectJSS 
+                tag="To"
                 value={destinityVal}
                 options={optionsDetinity}
                 onChange={onChangeDestinity}/>
+            
+            <Button variant="contained" onClick={clearOptions}>Clear</Button>
         </div>
     );
 }

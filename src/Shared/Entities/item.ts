@@ -1,4 +1,5 @@
 export default interface Item {
     key: string,
-    value: string
+    value: string,
+    allowed?: Array<string>
 }
