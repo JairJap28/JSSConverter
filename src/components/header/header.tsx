@@ -1,5 +1,6 @@
 import React from 'react';
 import { FunctionComponent, ReactElement } from 'react';
+import useStyles from './styles';
 
 import { 
     GetOptionsToSelect
@@ -15,6 +16,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 const Header : FunctionComponent<{}> = () : ReactElement => {
+    const classes = useStyles();
+
     const [originVal, setOriginVal] = React.useState('');
     const [optionsOrigin, setOptionOrigin] = React.useState(GetOptionsToSelect());
     const [option, setOption] = React.useState(false);
@@ -35,7 +38,7 @@ const Header : FunctionComponent<{}> = () : ReactElement => {
 
     return (
         <React.Fragment>
-            <Box display="flex" alignItems="center">
+            <Box className={classes.header} display="flex" alignItems="center">
                 <Box flexGrow={1}>
                     <header className="header">
                         <Typography variant="h3">JSS Converter</Typography>
