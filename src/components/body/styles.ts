@@ -4,9 +4,6 @@ const useStyles = makeStyles({
     body: {
         width: "100%",
         marginTop: 15
-    },
-    bodyButton: {
-        marginTop: 10
     }
 });
 
