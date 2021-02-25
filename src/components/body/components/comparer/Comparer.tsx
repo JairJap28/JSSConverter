@@ -4,6 +4,7 @@ import useStyles from './styles';
 
 // Components
 import TextArea from '../text-area/TextArea';
+import DialogGetJson from '../dialog-get-json/DialogGetJson';
 
 // Material UI
 import Grid from '@material-ui/core/Grid';
@@ -41,6 +42,7 @@ const Comparer: FunctionComponent = () : ReactElement => {
                     </Button>
                 </Box>
             </Box>
+            <DialogGetJson />
         </section>
     );
 }
