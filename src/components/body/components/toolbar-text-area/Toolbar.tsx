@@ -9,9 +9,19 @@ import WrapTextIcon from '@material-ui/icons/WrapText';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
 import ToolTip from '@material-ui/core/Tooltip';
+import { showDialogGetJSON } from '../../../../store/actionCreators';
+import { IUserInterface } from '../../../../store/actionTypes';
+import { connect } from 'react-redux';
+import ToolbarProps from './ToolbarProps';
+import { IToolbarActions } from './ToolbarProps';
 
-const ToolbarJSS: FunctionComponent = (): ReactElement => {
+const ToolbarJSS: FunctionComponent<ToolbarProps> = (props): ReactElement => {
     const classes = useStyles();
+
+    const handleConnectToJsonService = () => {
+        props.showDialogGetJSON();
+    }
+
     return (
         <Box display="flex" flexDirection="row-reverse">
             <Box>
@@ -36,7 +46,8 @@ const ToolbarJSS: FunctionComponent = (): ReactElement => {
                 <ToolTip title="Search Json" arrow>
                     <Button 
                         className={classes.toolbarButton}
-                        variant="contained">
+                        variant="contained"
+                        onClick={handleConnectToJsonService}>
                         <YoutubeSearchedForIcon fontSize="small"/>
                     </Button>
                 </ToolTip>
@@ -45,4 +56,8 @@ const ToolbarJSS: FunctionComponent = (): ReactElement => {
     );
 }
 
-export default ToolbarJSS;
+const mapActionsToProps: IToolbarActions = {
+    showDialogGetJSON
+}
+
+export default connect(null, mapActionsToProps)(ToolbarJSS);

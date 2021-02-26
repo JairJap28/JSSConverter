@@ -5,6 +5,12 @@ import {
     useState
 } from 'react';
 
+// Redux
+import { connect } from 'react-redux';
+import DialogGetJsonProps, { IDialogGetJsonProps } from './DialogGetJsonProps';
+import { IUserInterface } from '../../../../store/actionTypes';
+import { closeDialogGetJSON } from '../../../../store/actionCreators';
+
 // Material UI
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -15,7 +21,9 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import { TransitionProps } from '@material-ui/core/transitions/transition';
-import DialogGetJsonProps from './DialogGetJsonProps';
+import { IDialogGetJsonActions } from './DialogGetJsonProps';
+import { RootState } from '../../../../store/store';
+
 
 
 const Transition = React.forwardRef((
@@ -25,16 +33,15 @@ const Transition = React.forwardRef((
     })
 
 
-const DialogGetJson : FunctionComponent<DialogGetJsonProps> = ({ initialState }) : ReactElement => {
-    const [open, setOpen] = useState<boolean>(Boolean(initialState));
-    
+const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactElement => {
+    console.log(props);
     const handleClose = () => {
-        setOpen(false);
+        props.closeDialogGetJSON();
     }
 
     return (
         <Dialog 
-            open={open} 
+            open={props.initialState} 
             TransitionComponent={Transition}
             keepMounted
             onClose={handleClose}
@@ -66,4 +73,12 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = ({ initialState })
     );
 }
 
-export default DialogGetJson;
+const mapStateToProps = (state: RootState): IDialogGetJsonProps => ({
+    initialState: state.ui.dialogGetJsonState?.initialState
+});
+
+const mapActionsToProps: IDialogGetJsonActions = {
+    closeDialogGetJSON
+}
+
+export default connect(mapStateToProps, mapActionsToProps)(DialogGetJson);
