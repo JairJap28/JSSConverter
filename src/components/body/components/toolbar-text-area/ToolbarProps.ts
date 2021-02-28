@@ -1,6 +1,10 @@
-export interface IToolbarActions {
-    showDialogGetJSON: any
+export interface IToolbarProps {
+    displayNameParent: string,
 }
 
-type ToolbarProps = IToolbarActions;
+export interface IToolbarActions {
+    showDialogGetJSON: (owner: string) => void;
+}
+
+type ToolbarProps = IToolbarProps & IToolbarActions;
 export default ToolbarProps;

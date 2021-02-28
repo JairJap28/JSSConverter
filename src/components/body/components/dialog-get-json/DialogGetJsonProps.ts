@@ -1,9 +1,12 @@
 export interface IDialogGetJsonProps {
-    initialState: boolean 
+    initialState: boolean,
+    value?: string,
+    owner?: string
 }
 
 export interface IDialogGetJsonActions {
-    closeDialogGetJSON: any
+    closeDialogGetJSON: () => void;
+    addValueToComparer: (value: string) => void;
 }
 
 type DialogGetJsonProps = IDialogGetJsonProps & IDialogGetJsonActions;

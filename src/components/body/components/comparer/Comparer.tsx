@@ -17,10 +17,10 @@ const Comparer: FunctionComponent = () : ReactElement => {
         <section>
             <Grid container spacing={3}>
                 <Grid item xs={12} sm={6}>
-                    <TextArea label="JSON ONE"/>
+                    <TextArea label="JSON ONE" toolbar displayName="COMPARER_ORIGIN"/>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <TextArea label="JSON TWO"/>
+                    <TextArea label="JSON TWO" toolbar displayName="COMPARER_DESTINITY"/>
                 </Grid>
             </Grid>
             <Box display="flex" className={classes.compareButton}>

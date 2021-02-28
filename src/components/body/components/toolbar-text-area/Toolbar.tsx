@@ -9,8 +9,7 @@ import WrapTextIcon from '@material-ui/icons/WrapText';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
 import YoutubeSearchedForIcon from '@material-ui/icons/YoutubeSearchedFor';
 import ToolTip from '@material-ui/core/Tooltip';
-import { showDialogGetJSON } from '../../../../store/actionCreators';
-import { IUserInterface } from '../../../../store/actionTypes';
+import { showDialogGetJSON } from '../../../../store/systemActionCreators';
 import { connect } from 'react-redux';
 import ToolbarProps from './ToolbarProps';
 import { IToolbarActions } from './ToolbarProps';
@@ -19,7 +18,7 @@ const ToolbarJSS: FunctionComponent<ToolbarProps> = (props): ReactElement => {
     const classes = useStyles();
 
     const handleConnectToJsonService = () => {
-        props.showDialogGetJSON();
+        props.showDialogGetJSON(props.displayNameParent);
     }
 
     return (

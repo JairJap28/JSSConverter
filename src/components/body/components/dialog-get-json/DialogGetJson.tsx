@@ -2,14 +2,20 @@ import React from 'react';
 import { 
     FunctionComponent, 
     ReactElement,
-    useState
+    useState,
+    useEffect
 } from 'react';
+import useStyles from './styles';
 
 // Redux
 import { connect } from 'react-redux';
-import DialogGetJsonProps, { IDialogGetJsonProps } from './DialogGetJsonProps';
-import { IUserInterface } from '../../../../store/actionTypes';
-import { closeDialogGetJSON } from '../../../../store/actionCreators';
+import DialogGetJsonProps, { IDialogGetJsonProps, IDialogGetJsonActions } from './DialogGetJsonProps';
+import { closeDialogGetJSON, addValueToComparer } from '../../../../store/systemActionCreators';
+import { TransitionProps } from '@material-ui/core/transitions/transition';
+import { RootState } from '../../../../store/store';
+
+// Components
+import TextArea from '../text-area/TextArea';
 
 // Material UI
 import Dialog from '@material-ui/core/Dialog';
@@ -20,11 +26,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
-import { TransitionProps } from '@material-ui/core/transitions/transition';
-import { IDialogGetJsonActions } from './DialogGetJsonProps';
-import { RootState } from '../../../../store/store';
+import Box from '@material-ui/core/Box';
+import IconButton from '@material-ui/core/IconButton';
 
-
+// Material UI Icons
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import ReactJson from 'react-json-view';
 
 const Transition = React.forwardRef((
     props: TransitionProps & { children?: React.ReactElement<any, any> },
@@ -34,14 +42,45 @@ const Transition = React.forwardRef((
 
 
 const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactElement => {
-    console.log(props);
+    const classes = useStyles();
+    
+    const [open, setOpen] = useState<boolean>(false);
+    const [url, setUrl] = useState<string>('');
+    const [response, setReponse] = useState<string>('');
+    const [showPreview, setShowPreview] = useState<boolean>(false);
+
     const handleClose = () => {
+        setOpen(false);
+        setUrl('');
+        setReponse('');
+        setShowPreview(false);
         props.closeDialogGetJSON();
+    }
+
+    const handleAdd = () => {
+        props.addValueToComparer(response);
+    }
+
+    useEffect(() => {
+        setOpen(Boolean(props.initialState));
+    }, [props.initialState]);
+
+    const connectToSource = () => {
+        fetch(url)
+            .then(data => data.json())
+            .then(data => {
+                setReponse(JSON.stringify(data));
+            })
+            .catch(console.warn);
+    }
+
+    const changeUrl = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
+        setUrl(event.target.value);
     }
 
     return (
         <Dialog 
-            open={props.initialState} 
+            open={open} 
             TransitionComponent={Transition}
             keepMounted
             onClose={handleClose}
@@ -54,20 +93,54 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
 
                         We will bring the results in here for you.
                     </DialogContentText>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        label="JSON Source"
-                        type="text"
-                        fullWidth/>
+                    <Box display="flex" alignItems="center">
+                        <Box flexGrow={1}>
+                            <TextField
+                            autoFocus
+                            margin="dense"
+                            label="JSON Source"
+                            type="text"
+                            value={url}
+                            onChange={changeUrl}
+                            fullWidth/>
+                        </Box>
+                        { response &&
+                            <Box>
+                                {
+                                    !showPreview && 
+                                    <IconButton aria-label="Preview JSON Response" onClick={() => setShowPreview(true)}>
+                                        <VisibilityIcon />
+                                    </IconButton>
+                                }
+                                {
+                                    showPreview &&
+                                    <IconButton aria-label="Hide preview JSON Response" onClick={() => setShowPreview(false)}>
+                                        <VisibilityOffIcon />
+                                    </IconButton>
+                                }
+                            </Box>
+                        }
+                    </Box>
+                    { 
+                        showPreview && 
+                        <div className={classes.dialogPreviewContainer}>
+                            <ReactJson src={JSON.parse(response)} theme="bright:inverted" enableClipboard={false}/>
+                        </div>
+                    }
                 </DialogContent>
                 <DialogActions>
-                    <Button color="primary">
-                        Connect
-                    </Button>
-                    <Button color="secondary">
+                    <Button color="secondary" onClick={handleClose}>
                         Cancel
                     </Button>
+                    <Button color="primary" onClick={connectToSource}>
+                        Connect
+                    </Button>
+                    {   
+                        response &&
+                        <Button color="default" onClick={handleAdd}>
+                            Add
+                        </Button>
+                    }
                 </DialogActions>
         </Dialog>
     );
@@ -78,7 +151,8 @@ const mapStateToProps = (state: RootState): IDialogGetJsonProps => ({
 });
 
 const mapActionsToProps: IDialogGetJsonActions = {
-    closeDialogGetJSON
+    closeDialogGetJSON,
+    addValueToComparer
 }
 
 export default connect(mapStateToProps, mapActionsToProps)(DialogGetJson);

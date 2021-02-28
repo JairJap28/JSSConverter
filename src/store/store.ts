@@ -1,6 +1,6 @@
-import { combineReducers, compose, createStore, StoreEnhancer } from 'redux';
-import { reducer } from './reducer';
-import { IUserInterface } from './actionTypes';
+import { combineReducers, compose, createStore } from 'redux';
+import { systemReducer } from './systemrReducer';
+import { IUserInterface } from './systemActionTypes';
 import { composeWithDevTools } from 'redux-devtools-extension';
 
 export interface IRootState {
@@ -8,7 +8,7 @@ export interface IRootState {
 }
 
 const rootReducer = combineReducers({
-    ui: reducer
+    ui: systemReducer
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
