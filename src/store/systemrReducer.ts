@@ -1,8 +1,8 @@
-import { IUserInterface, ADD_VALUE_JSON_DIALOG } from './systemActionTypes';
+import { IUserInterface, ADD_VALUE_JSON_DIALOG, CLEAR_JSON_DIALOG } from './systemActionTypes';
 import { OPEN_GET_JSON_DIALOG, CLOSE_GET_JSON_DIALOG } from './systemActionTypes';
 
 const init: IUserInterface = {
-    dialogGetJsonState: { initialState: false }
+    JsonComparerState: { initialState: false }
 }
 
 export const systemReducer = (state: IUserInterface = init, action: any) => {
@@ -10,8 +10,8 @@ export const systemReducer = (state: IUserInterface = init, action: any) => {
         case OPEN_GET_JSON_DIALOG:
             return {
                 ...state,
-                dialogGetJsonState: { 
-                    ...state.dialogGetJsonState,
+                JsonComparerState: { 
+                    ...state.JsonComparerState,
                     initialState: true,
                     owner: action.payload.owner
                 }
@@ -24,10 +24,16 @@ export const systemReducer = (state: IUserInterface = init, action: any) => {
         case ADD_VALUE_JSON_DIALOG:
             return {
                 ...state,
-                dialogGetJsonState: { 
+                JsonComparerState: {
+                    ...state.JsonComparerState,
                     initialState: action.payload.initialState,
                     value: action.payload.value
                 }
+            };
+        case CLEAR_JSON_DIALOG: 
+            return {
+                ...state,
+                JsonComparerState: { initialState: false }
             };
         default:
             return state;

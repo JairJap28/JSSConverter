@@ -21,6 +21,10 @@ const ToolbarJSS: FunctionComponent<ToolbarProps> = (props): ReactElement => {
         props.showDialogGetJSON(props.displayNameParent);
     }
 
+    const handlePasteJson = () => {
+
+    }
+
     return (
         <Box display="flex" flexDirection="row-reverse">
             <Box>
@@ -36,6 +40,7 @@ const ToolbarJSS: FunctionComponent<ToolbarProps> = (props): ReactElement => {
                 <ToolTip title="Copy Json" arrow>
                     <Button 
                         className={classes.toolbarButton}
+                        onClick={handlePasteJson}
                         variant="contained">
                         <FileCopyIcon fontSize="small"/>
                     </Button>

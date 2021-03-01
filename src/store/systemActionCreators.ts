@@ -18,3 +18,7 @@ export const addValueToComparer = (value: string) => {
         value
     });
 }
+
+export const clearDialogJson = () => {
+    return action(actionTypes.CLEAR_JSON_DIALOG);
+}

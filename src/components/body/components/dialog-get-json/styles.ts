@@ -4,6 +4,10 @@ const useStyles = makeStyles({
     dialogPreviewContainer: {
         height: 300,
         marginTop: 15
+    },
+    dialogInput: {
+        fontSize: 14,
+        fontStyle: "italic"
     }
 });
 

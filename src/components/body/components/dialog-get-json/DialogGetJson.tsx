@@ -14,9 +14,6 @@ import { closeDialogGetJSON, addValueToComparer } from '../../../../store/system
 import { TransitionProps } from '@material-ui/core/transitions/transition';
 import { RootState } from '../../../../store/store';
 
-// Components
-import TextArea from '../text-area/TextArea';
-
 // Material UI
 import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle';
@@ -28,6 +25,7 @@ import Button from '@material-ui/core/Button';
 import Slide from '@material-ui/core/Slide';
 import Box from '@material-ui/core/Box';
 import IconButton from '@material-ui/core/IconButton';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 // Material UI Icons
 import VisibilityIcon from '@material-ui/icons/Visibility';
@@ -48,16 +46,22 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
     const [url, setUrl] = useState<string>('');
     const [response, setReponse] = useState<string>('');
     const [showPreview, setShowPreview] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
-    const handleClose = () => {
+    const clearStates = () => {
         setOpen(false);
         setUrl('');
         setReponse('');
         setShowPreview(false);
+    }
+
+    const handleClose = () => {
+        clearStates();
         props.closeDialogGetJSON();
     }
 
     const handleAdd = () => {
+        clearStates();
         props.addValueToComparer(response);
     }
 
@@ -66,12 +70,17 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
     }, [props.initialState]);
 
     const connectToSource = () => {
+        setLoading(true);
         fetch(url)
             .then(data => data.json())
             .then(data => {
                 setReponse(JSON.stringify(data));
+                setLoading(false);
             })
-            .catch(console.warn);
+            .catch(err => {
+                console.warn(err);
+                setLoading(false);
+            });
     }
 
     const changeUrl = (event: React.ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => {
@@ -85,7 +94,12 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
             keepMounted
             onClose={handleClose}
             aria-labelledby="form-dialog-get-json">
-                <DialogTitle>Connect to JSON Source</DialogTitle>
+                <DialogTitle>
+                    <Box display="flex">
+                        <Box flexGrow={1}>Connect to JSON Source</Box>
+                        { loading && <Box><CircularProgress size={20}/></Box>}
+                    </Box>
+                </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         Please, add the URL of a GET Rest API that allows
@@ -102,6 +116,9 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
                             type="text"
                             value={url}
                             onChange={changeUrl}
+                            InputProps={{
+                                className: classes.dialogInput
+                            }}
                             fullWidth/>
                         </Box>
                         { response &&
@@ -147,7 +164,7 @@ const DialogGetJson : FunctionComponent<DialogGetJsonProps> = (props) : ReactEle
 }
 
 const mapStateToProps = (state: RootState): IDialogGetJsonProps => ({
-    initialState: state.ui.dialogGetJsonState?.initialState
+    initialState: state.ui.JsonComparerState?.initialState
 });
 
 const mapActionsToProps: IDialogGetJsonActions = {
